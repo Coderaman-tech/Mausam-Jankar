@@ -1,0 +1,41 @@
+*,*::after,*::before{
+    box-sizing: boarder-box;
+}
+
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 400px;
+    /* to make all content in center */
+    margin: auto;
+}
+
+/* mobile first approach */
+.container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-areas: 
+    "current current"
+    "hourly hourly"
+    "fiveday fiveday"
+    "feelslike humidity";
+}
+#current-forecast{
+    grid-area: current;
+}
+
+#hourly-forecast{
+    grid-area: hourly;
+}
+
+#five-day-forecast{
+    grid-area: fiveday;
+}
+
+#feels-like{
+    grid-area: feelslike;
+}
+
+#humidity{
+    grid-area: humidity;
+}
