@@ -2,6 +2,23 @@
     box-sizing: boarder-box;
 }
 
+
+:root{
+--spacing-medium:8px;
+--spacing-regular:16px;
+
+--font-small:0.5rem;
+--font-regular:1rem;
+--font-large:2rem;
+--font-xl:4rem;
+
+--font-semibold:600;
+}
+
+h1,h2{margin: 0;}
+p{
+    margin: var(--spacing-medium);
+}
 body{
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -19,10 +36,30 @@ body{
     "hourly hourly"
     "fiveday fiveday"
     "feelslike humidity";
+    gap:var(--spacing-regular); 
 }
+
+ .container,.container > article{
+    border:1px solid;
+    border-radius: var(--spacing-regular);
+    padding: var(--spacing-regular);
+} 
+/* styles related to current weather data */
 #current-forecast{
     grid-area: current;
+    text-align: center;
 }
+
+#current-forecast .temp{
+    font-size: var(--font-xl);
+}
+
+
+#current-forecast .description,#current-forecast .min-max-temp{
+    font-size: var(--font-regular);
+    font-weight: var(--font-semibold);
+}
+
 
 #hourly-forecast{
     grid-area: hourly;
