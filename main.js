@@ -1,5 +1,5 @@
 //put our api key in a API_KEY variable
-const API_KEY="ed3bc1def53428b7b7537acd276e8a35";
+const API_KEY="Your_API_KEY";
 
 
 //fetch the data with async await to get full response
