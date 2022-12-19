@@ -54,6 +54,10 @@ body{
     font-size: var(--font-xl);
 }
 
+#current-forecast {
+    /* capitalize the first letter */
+    text-transform: capitalize; 
+}
 
 #current-forecast .description,#current-forecast .min-max-temp{
     font-size: var(--font-regular);
