@@ -1,6 +1,7 @@
 //put our api key in a API_KEY variable
 const API_KEY="ed3bc1def53428b7b7537acd276e8a35";
 
+const DAYS_OF_THE_WEEK=["sun","mon","tue","wed","thu","fri","sat"];
 
 //fetch the data about weather with async await to get full response
 const getCurrentWeatherData=async()=>{
@@ -40,7 +41,7 @@ loadCurrentForecast=({name,main:{temp,temp_max,temp_min},weather:[{description}]
 //take content from API of forecast and put into a hourly-conatiner id
 
 const loadHourlyForecast=(hourlyForecast)=>{
-    console.log(hourlyForecast);
+    // console.log(hourlyForecast);
     let dataFor12Hours=hourlyForecast.slice(1,13);
     const hourlyContainer=document.querySelector(".hourly-container");
     let innerHTMLString=``;
@@ -55,7 +56,47 @@ const loadHourlyForecast=(hourlyForecast)=>{
     }
     hourlyContainer.innerHTML=innerHTMLString;
 }
+const calculateDayWiseForecast=(hourlyForecast)=>{
+    let dayWiseForecast=new Map();
+    for(let forecast of hourlyForecast){
+        const [date]=forecast.dt_txt.split(" ");
+        const dayOfTheWeek=DAYS_OF_THE_WEEK[new Date(date).getDay()];
+        if(dayWiseForecast.has(dayOfTheWeek)){
+            let forecastForTheDay=dayWiseForecast.get(dayOfTheWeek);
+            forecastForTheDay.push(forecast);
+            dayWiseForecast.set(dayOfTheWeek,forecastForTheDay);
+        }
+        else{
+            dayWiseForecast.set(dayOfTheWeek,[forecast]);
+        }
+    }
+    for(let [key,value] of dayWiseForecast){
+        let temp_min=Math.min(...Array.from(value,val=>val.temp_min));
+        let temp_max=Math.min(...Array.from(value,val=>val.temp_max));
 
+        dayWiseForecast.set(key,{temp_min,temp_max,icon:value.find(v=>v.icon).icon});
+
+    }
+   return dayWiseForecast;
+}
+
+const loadFiveDayForecast=(hourlyForecast)=>{
+   const dayWiseForecast=calculateDayWiseForecast(hourlyForecast);
+   const container=document.querySelector(".five-day-forecast-container");
+   let dayWiseInfo="";
+   Array.from(dayWiseForecast).map(([day,{temp_max,temp_min,icon}],index)=>{
+
+    if(index<5){
+    dayWiseInfo+=`<article class="day-wise-forecast">
+    <h3 class="day">${index===0 ? "today":day}</h3>
+    <img class="icon" src="${createIconUrl(icon)}" alt="icon for the forecast">
+    <p class="min-temp">${formatTemperature(temp_min)}</p>
+    <p class="max-temp">${formatTemperature(temp_max)}</p>
+</article>`;}
+   })
+
+   container.innerHTML=dayWiseInfo;
+}
 //extract feels_like data from response coming out by API
 const loadFeelsLike=({main:{feels_like}})=>{
     let container=document.querySelector("#feels-like");
@@ -65,7 +106,7 @@ const loadFeelsLike=({main:{feels_like}})=>{
 //extract humidity data from response coming out by API
 const loadHumidity=({main:{humidity}})=>{
     let container=document.querySelector("#humidity");
-    container.querySelector(".humidity-value").textContent =`${humidity} %`;
+    container.querySelector(".humidity-value").textContent =`${humidity}%`;
 }
 
 
@@ -75,6 +116,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
        loadCurrentForecast(currentWeather );
        const hourlyForecast=await getHourForecast(currentWeather);
        loadHourlyForecast(hourlyForecast);
+       loadFiveDayForecast(hourlyForecast);
        loadFeelsLike(currentWeather);
        loadHumidity(currentWeather);
  })
