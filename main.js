@@ -15,7 +15,7 @@ const getCitiesUsingGeolocation=async(searchText)=>{
 
 //fetch the data about weather with async await to get full response
 const getCurrentWeatherData=async({lat,lon,name:city})=>{
-    const url=lat && lon ?`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`:`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+    const url=lat && lon ?`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`:`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
     const response= await fetch(url);
     return response.json()
 }
