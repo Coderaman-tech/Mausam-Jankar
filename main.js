@@ -44,8 +44,7 @@ loadCurrentForecast=({name,main:{temp,temp_max,temp_min},weather:[{description}]
     currentForecastElement.querySelector(".city").textContent=name;
     currentForecastElement.querySelector(".temp").textContent=formatTemperature(temp);
     currentForecastElement.querySelector(".description").textContent=description;
-    currentForecastElement.querySelector(".min-max-temp").textContent=`H:${formatTemperature(temp_max)} L:${formatTemperature(temp_min)}`;
-
+    currentForecastElement.querySelector(".min-max-temp").textContent=`H:${formatTemperature(temp_max)} L:${formatTemperature(temp_min)}`;  
 }
 
 //take content from API of forecast and put into a hourly-conatiner id
